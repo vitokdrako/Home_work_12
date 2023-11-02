@@ -117,8 +117,8 @@ class Record:
     @classmethod
     def from_dict(cls, data):
         name = data['name']
-        phones = [Phone(phone_data['value']) for phone_data in data['phones']]
-        birthday = Birthday.from_dict(data['birthday']) if data['birthday'] else None
+        phones = [Phone.from_dict(phone) for phone in data['phones']]
+        birthday = data['birthday'] if isinstance(data['birthday'], str) else None
         return cls(name, phones, birthday)
 
 class AddressBook(UserDict):
