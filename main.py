@@ -22,6 +22,8 @@ class Phone(Field):
 
     @staticmethod
     def validate_number(number):
+        if isinstance(number, Phone):
+            number = number.value 
         return re.fullmatch(r'\+?\d{10,15}', number) is not None
     
     def to_dict(self):
@@ -115,7 +117,7 @@ class Record:
     @classmethod
     def from_dict(cls, data):
         name = data['name']
-        phones = [Phone.from_dict(phone) for phone in data['phones']]
+        phones = [Phone(phone_data['value']) for phone_data in data['phones']]
         birthday = Birthday.from_dict(data['birthday']) if data['birthday'] else None
         return cls(name, phones, birthday)
 
